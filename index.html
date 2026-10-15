@@ -6,7 +6,7 @@
   <meta name="description" content="裕信汽車零件服務部內部儀表板、管理系統與數位工具入口平台">
   <meta name="theme-color" content="#0b2a4a">
   <title>裕信汽車零件服務部 AI 數位管理平台</title>
-  <link rel="stylesheet" href="styles.css?v=20261015-3">
+  <link rel="stylesheet" href="styles.css?v=20261015-4">
 </head>
 <body>
   <header class="topbar">
@@ -113,6 +113,18 @@
     </form>
   </dialog>
 
+  <dialog class="modal modal-small auth-modal" id="passwordModal">
+    <form method="dialog" id="passwordForm" novalidate>
+      <div class="modal-head">
+        <div><p class="eyebrow">ADMIN ACCESS</p><h2>管理密碼驗證</h2></div>
+        <button type="button" class="icon-btn modal-close" aria-label="關閉">×</button>
+      </div>
+      <div class="auth-copy"><span class="auth-lock" aria-hidden="true">◆</span><p>此功能僅供管理人員使用，請輸入管理密碼後繼續。</p></div>
+      <label class="field"><span>管理密碼 <em>*</em></span><div class="password-field"><input id="adminPassword" type="password" inputmode="numeric" autocomplete="current-password" placeholder="請輸入管理密碼" required><button id="togglePassword" type="button" aria-label="顯示密碼">顯示</button></div><small class="error"></small></label>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost modal-close">取消</button><button type="submit" class="btn btn-primary">驗證並繼續</button></div>
+    </form>
+  </dialog>
+
   <div class="confirm-layer" id="confirmLayer" hidden>
     <div class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
       <div class="confirm-icon">!</div><h2 id="confirmTitle">確認刪除？</h2><p id="confirmText"></p>
@@ -120,6 +132,6 @@
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
+  <script src="app.js?v=20261015-4"></script>
 </body>
 </html>

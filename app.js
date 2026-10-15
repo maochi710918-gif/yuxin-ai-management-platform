@@ -31,6 +31,8 @@
   let state = loadState();
   let filters = { view: 'all', categoryId: 'all', query: '' };
   let confirmAction = null;
+  let pendingAdminAction = null;
+  let adminUnlocked = sessionStorage.getItem('yuxin-admin-unlocked') === '1';
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -46,6 +48,13 @@
   function escapeHtml(value = '') { return value.replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char])); }
   function categoryName(id) { return state.categories.find(category => category.id === id)?.name || '未分類'; }
   function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove('show'), 2400); }
+  function passwordHash(value) { let hash = 2166136261; for (const char of value) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16); }
+  function requireAdmin(action) {
+    if (adminUnlocked) return action();
+    pendingAdminAction = action;
+    $('#passwordForm').reset(); clearErrors(); $('#togglePassword').textContent = '顯示'; $('#adminPassword').type = 'password';
+    $('#passwordModal').showModal(); setTimeout(() => $('#adminPassword').focus(), 50);
+  }
 
   function render() {
     const active = state.entries.filter(entry => entry.active);
@@ -155,7 +164,7 @@
     if (card && event.target.closest('[data-action]')) {
       const action = event.target.closest('[data-action]').dataset.action; const entry = state.entries.find(item => item.id === card.dataset.id);
       if (action === 'favorite') { state.favorites = state.favorites.includes(entry.id) ? state.favorites.filter(id => id !== entry.id) : [...state.favorites, entry.id]; saveState(); render(); showToast(state.favorites.includes(entry.id) ? '已加入我的收藏' : '已取消收藏'); }
-      if (action === 'edit') openEntryModal(entry);
+      if (action === 'edit') requireAdmin(() => openEntryModal(entry));
       if (action === 'open') { state.recent = [{ id: entry.id, at: Date.now() }, ...state.recent.filter(item => item.id !== entry.id)].slice(0, 10); saveState(); render(); }
     }
     const chip = event.target.closest('[data-category]'); if (chip) { filters.categoryId = chip.dataset.category; render(); }
@@ -164,9 +173,9 @@
     if (event.target.closest('.modal-close')) event.target.closest('dialog').close();
   });
 
-  $('#addBtn').addEventListener('click', () => openEntryModal());
+  $('#addBtn').addEventListener('click', () => requireAdmin(() => openEntryModal()));
   $('#adminAddBtn').addEventListener('click', () => { $('#manageModal').close(); openEntryModal(); });
-  $('#manageBtn').addEventListener('click', () => { render(); $('#manageModal').showModal(); });
+  $('#manageBtn').addEventListener('click', () => requireAdmin(() => { render(); $('#manageModal').showModal(); }));
   $('#clearFiltersBtn').addEventListener('click', () => { filters = { view: 'all', categoryId: 'all', query: '' }; $('#searchInput').value = ''; $$('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === 'all')); render(); });
   $('#searchInput').addEventListener('input', event => { filters.query = event.target.value.trim(); render(); });
   document.addEventListener('keydown', event => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); $('#searchInput').focus(); } if (event.key === 'Escape' && !$('#confirmLayer').hidden) closeConfirm(); });
@@ -177,6 +186,15 @@
     else { state.entries.push({ id: uid('portal'), ...data, active: true }); showToast('入口已新增'); }
     saveState(); $('#entryModal').close(); render();
   });
+
+  $('#passwordForm').addEventListener('submit', event => {
+    event.preventDefault(); const password = $('#adminPassword').value;
+    if (!password) return setError('#adminPassword', '請輸入管理密碼');
+    if (passwordHash(password) !== '144417d5') { setError('#adminPassword', '密碼錯誤，請重新輸入'); $('#adminPassword').select(); return; }
+    adminUnlocked = true; sessionStorage.setItem('yuxin-admin-unlocked', '1'); $('#passwordModal').close(); showToast('管理權限已解鎖'); const action = pendingAdminAction; pendingAdminAction = null; action?.();
+  });
+  $('#togglePassword').addEventListener('click', () => { const input = $('#adminPassword'); const showing = input.type === 'text'; input.type = showing ? 'password' : 'text'; $('#togglePassword').textContent = showing ? '顯示' : '隱藏'; $('#togglePassword').setAttribute('aria-label', showing ? '顯示密碼' : '隱藏密碼'); input.focus(); });
+  $('#passwordModal').addEventListener('close', () => { if (!adminUnlocked) pendingAdminAction = null; });
 
   $$('.admin-tabs button').forEach(button => button.addEventListener('click', () => { $$('.admin-tabs button').forEach(btn => btn.classList.toggle('active', btn === button)); $('#entriesPanel').hidden = button.dataset.adminTab !== 'entries'; $('#categoriesPanel').hidden = button.dataset.adminTab !== 'categories'; }));
   $('#adminEntries').addEventListener('click', event => {
