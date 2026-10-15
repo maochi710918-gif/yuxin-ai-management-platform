@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="裕信汽車零件服務部內部儀表板、管理系統與數位工具入口平台">
+  <meta name="theme-color" content="#0b2a4a">
+  <title>裕信汽車零件服務部 AI 數位管理平台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="返回首頁">
+      <span class="brand-mark" aria-hidden="true">裕</span>
+      <span><strong>裕信汽車</strong><small>零件服務部</small></span>
+    </a>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost" id="manageBtn" type="button"><span aria-hidden="true">⚙</span> 管理入口</button>
+      <button class="btn btn-primary" id="addBtn" type="button"><span aria-hidden="true">＋</span> 新增入口</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="pageTitle">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> INTERNAL DIGITAL WORKSPACE</p>
+        <h1 id="pageTitle">AI 數位管理平台</h1>
+        <p>整合損益、營運、人員與行政工具，讓每一次決策都從正確入口開始。</p>
+      </div>
+      <div class="hero-meta">
+        <div><span id="activeCount">10</span><small>啟用入口</small></div>
+        <div><span id="categoryCount">4</span><small>管理分類</small></div>
+        <div><span id="favoriteCount">0</span><small>我的收藏</small></div>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="網站入口">
+      <div class="search-row">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="搜尋入口名稱、分類或用途…" autocomplete="off">
+          <kbd>Ctrl K</kbd>
+        </label>
+        <div class="view-toggle" role="group" aria-label="切換顯示方式">
+          <button type="button" data-layout="grid" class="active" title="卡片檢視" aria-label="卡片檢視">▦</button>
+          <button type="button" data-layout="list" title="清單檢視" aria-label="清單檢視">☷</button>
+        </div>
+      </div>
+
+      <div class="view-tabs" role="tablist" aria-label="入口檢視">
+        <button class="active" type="button" data-view="all" role="tab">全部入口 <span id="allBadge">10</span></button>
+        <button type="button" data-view="favorites" role="tab">我的收藏 <span id="favoriteBadge">0</span></button>
+        <button type="button" data-view="recent" role="tab">最近使用 <span id="recentBadge">0</span></button>
+      </div>
+
+      <div class="category-strip" id="categoryStrip" aria-label="分類篩選"></div>
+      <div id="portalSections"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <div aria-hidden="true">⌕</div>
+        <h2>找不到符合條件的入口</h2>
+        <p>請嘗試其他關鍵字或切換分類。</p>
+        <button class="btn btn-ghost" id="clearFiltersBtn" type="button">清除篩選</button>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>裕信汽車零件服務部</span><span>AI Digital Management Platform</span></footer>
+
+  <dialog class="modal" id="entryModal">
+    <form method="dialog" id="entryForm" novalidate>
+      <div class="modal-head">
+        <div><p class="eyebrow">PORTAL SETTINGS</p><h2 id="entryModalTitle">新增入口</h2></div>
+        <button type="button" class="icon-btn modal-close" aria-label="關閉">×</button>
+      </div>
+      <input type="hidden" id="entryId">
+      <div class="form-grid">
+        <label class="field field-wide"><span>入口名稱 <em>*</em></span><input id="entryName" maxlength="60" placeholder="例如：服務部營運儀表板" required><small class="error"></small></label>
+        <label class="field field-wide"><span>完整網址 <em>*</em></span><input id="entryUrl" type="url" placeholder="https://example.com/path#/page" required><small class="help">會完整保留路徑、查詢參數與 # 片段</small><small class="error"></small></label>
+        <label class="field"><span>分類 <em>*</em></span><select id="entryCategory" required></select><small class="error"></small></label>
+        <label class="field"><span>顯示圖示</span><select id="entryIcon"></select></label>
+        <label class="field field-wide"><span>用途說明 <em>*</em></span><textarea id="entryDescription" maxlength="120" rows="3" placeholder="用一句話說明這個入口的用途" required></textarea><small class="error"></small></label>
+      </div>
+      <div class="form-alert" id="formAlert" role="alert" hidden></div>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost modal-close">取消</button><button type="submit" class="btn btn-primary">儲存入口</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal modal-large" id="manageModal">
+    <div class="modal-head sticky">
+      <div><p class="eyebrow">ADMIN CONSOLE</p><h2>入口管理</h2></div>
+      <button type="button" class="icon-btn modal-close" aria-label="關閉">×</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="active" type="button" data-admin-tab="entries">入口管理</button>
+      <button type="button" data-admin-tab="categories">分類管理</button>
+    </div>
+    <section id="entriesPanel" class="admin-panel">
+      <div class="admin-toolbar"><p>拖曳項目或使用箭頭調整顯示順序。</p><button class="btn btn-primary btn-small" id="adminAddBtn" type="button">＋ 新增入口</button></div>
+      <div id="adminEntries" class="admin-list"></div>
+    </section>
+    <section id="categoriesPanel" class="admin-panel" hidden>
+      <div class="admin-toolbar"><p>分類順序會同步套用於首頁。</p><button class="btn btn-primary btn-small" id="addCategoryBtn" type="button">＋ 新增分類</button></div>
+      <div id="adminCategories" class="admin-list"></div>
+    </section>
+  </dialog>
+
+  <dialog class="modal modal-small" id="categoryModal">
+    <form method="dialog" id="categoryForm" novalidate>
+      <div class="modal-head"><div><p class="eyebrow">CATEGORY</p><h2 id="categoryModalTitle">新增分類</h2></div><button type="button" class="icon-btn modal-close">×</button></div>
+      <input type="hidden" id="categoryId">
+      <label class="field"><span>分類名稱 <em>*</em></span><input id="categoryName" maxlength="40" required><small class="error"></small></label>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost modal-close">取消</button><button type="submit" class="btn btn-primary">儲存分類</button></div>
+    </form>
+  </dialog>
+
+  <div class="confirm-layer" id="confirmLayer" hidden>
+    <div class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="confirm-icon">!</div><h2 id="confirmTitle">確認刪除？</h2><p id="confirmText"></p>
+      <div class="modal-actions"><button class="btn btn-ghost" id="confirmCancel" type="button">取消</button><button class="btn btn-danger" id="confirmOk" type="button">確認刪除</button></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
