@@ -6,7 +6,7 @@
   <meta name="description" content="裕信汽車零件服務部內部儀表板、管理系統與數位工具入口平台">
   <meta name="theme-color" content="#0b2a4a">
   <title>裕信汽車零件服務部 AI 數位管理平台</title>
-  <link rel="stylesheet" href="styles.css?v=20261015-4">
+  <link rel="stylesheet" href="styles.css?v=20261016-1">
 </head>
 <body>
   <header class="topbar">
@@ -14,17 +14,39 @@
       <span class="brand-mark" aria-hidden="true">ES</span>
       <span><strong>裕信汽車</strong><small>零件服務部</small></span>
     </a>
-    <div class="topbar-actions">
+    <div class="topbar-actions" id="topbarActions" hidden>
+      <button class="btn btn-ghost" id="switchWorkspaceBtn" type="button"><span aria-hidden="true">⇄</span> 切換入口</button>
       <button class="btn btn-ghost" id="manageBtn" type="button"><span aria-hidden="true">⚙</span> 管理入口</button>
       <button class="btn btn-primary" id="addBtn" type="button"><span aria-hidden="true">＋</span> 新增入口</button>
     </div>
   </header>
 
   <main>
+    <section class="entry-landing" id="entryLanding" aria-labelledby="entryLandingTitle">
+      <div class="entry-landing-copy">
+        <p class="eyebrow"><span></span> SELECT YOUR WORKSPACE</p>
+        <h1 id="entryLandingTitle">請選擇管理入口</h1>
+        <p>依工作範圍進入對應的數位管理平台。</p>
+      </div>
+      <div class="workspace-choices">
+        <button class="workspace-choice plant" type="button" data-workspace="plant">
+          <span class="workspace-choice-icon" aria-hidden="true">廠</span>
+          <span class="workspace-choice-copy"><small>WORKSHOP</small><strong>服務廠</strong><em>進入服務廠專屬系統與工具</em></span>
+          <span class="workspace-choice-meta"><b id="plantEntryCount">0</b> 個入口 <i>→</i></span>
+        </button>
+        <button class="workspace-choice department" type="button" data-workspace="department">
+          <span class="workspace-choice-icon" aria-hidden="true">部</span>
+          <span class="workspace-choice-copy"><small>SERVICE DEPARTMENT</small><strong>服務部</strong><em>進入現有儀表板與管理系統</em></span>
+          <span class="workspace-choice-meta"><b id="departmentEntryCount">10</b> 個入口 <i>→</i></span>
+        </button>
+      </div>
+    </section>
+
+    <div id="portalShell" hidden>
     <section class="hero" aria-labelledby="pageTitle">
       <div class="hero-copy">
         <p class="eyebrow"><span></span> INTERNAL DIGITAL WORKSPACE</p>
-        <h1 id="pageTitle">AI 數位管理平台</h1>
+        <h1 id="pageTitle">服務部 AI 數位管理平台</h1>
         <p>整合損益、營運、人員與行政工具，讓每一次決策都從正確入口開始。</p>
       </div>
       <div class="hero-meta">
@@ -57,11 +79,12 @@
       <div id="portalSections"></div>
       <div class="empty-state" id="emptyState" hidden>
         <div aria-hidden="true">⌕</div>
-        <h2>找不到符合條件的入口</h2>
-        <p>請嘗試其他關鍵字或切換分類。</p>
+        <h2 id="emptyTitle">找不到符合條件的入口</h2>
+        <p id="emptyText">請嘗試其他關鍵字或切換分類。</p>
         <button class="btn btn-ghost" id="clearFiltersBtn" type="button">清除篩選</button>
       </div>
     </section>
+    </div>
   </main>
 
   <footer><span>裕信汽車零件服務部</span><span>AI Digital Management Platform</span></footer>
@@ -76,8 +99,9 @@
       <div class="form-grid">
         <label class="field field-wide"><span>入口名稱 <em>*</em></span><input id="entryName" maxlength="60" placeholder="例如：服務部營運儀表板" required><small class="error"></small></label>
         <label class="field field-wide"><span>完整網址 <em>*</em></span><input id="entryUrl" type="url" placeholder="https://example.com/path#/page" required><small class="help">會完整保留路徑、查詢參數與 # 片段</small><small class="error"></small></label>
+        <label class="field"><span>入口歸屬 <em>*</em></span><select id="entryWorkspace" required><option value="department">服務部</option><option value="plant">服務廠</option></select><small class="error"></small></label>
         <label class="field"><span>分類 <em>*</em></span><select id="entryCategory" required></select><small class="error"></small></label>
-        <label class="field"><span>顯示圖示</span><select id="entryIcon"></select></label>
+        <label class="field field-wide"><span>顯示圖示</span><select id="entryIcon"></select></label>
         <label class="field field-wide"><span>用途說明 <em>*</em></span><textarea id="entryDescription" maxlength="120" rows="3" placeholder="用一句話說明這個入口的用途" required></textarea><small class="error"></small></label>
       </div>
       <div class="form-alert" id="formAlert" role="alert" hidden></div>
@@ -132,6 +156,6 @@
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=20261015-4"></script>
+  <script src="app.js?v=20261016-1"></script>
 </body>
 </html>

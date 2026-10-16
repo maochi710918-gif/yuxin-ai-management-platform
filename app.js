@@ -2,6 +2,10 @@
   'use strict';
 
   const STORAGE_KEY = 'yuxin-ai-portal-v1';
+  const workspaces = {
+    plant: { name: '服務廠' },
+    department: { name: '服務部' }
+  };
   const iconOptions = {
     chart: '▥', service: '◆', analytics: '◫', team: '♟', radar: '◎', capacity: '▤',
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
@@ -14,21 +18,22 @@
       { id: 'admin', name: '客戶滿意度與行政工具' }
     ],
     entries: [
-      { id: 'company-pl', name: '裕信汽車損益儀表板', url: 'https://maochi710918-gif.github.io/yuxin-pl-dashboard/', categoryId: 'company', description: '快速查看公司整體損益與營運資訊。', icon: 'chart', active: true },
-      { id: 'service-pl', name: '裕信服務部損益儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-pl-dashboard/', categoryId: 'service', description: '集中掌握服務部損益與營運概況。', icon: 'chart', active: true },
-      { id: 'service-dashboard', name: '裕信服務部營運儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', categoryId: 'service', description: '開啟服務部日常營運資訊入口。', icon: 'service', active: true },
-      { id: 'aftersales', name: '售後服務分析儀表板', url: 'https://es-aftersales-dashboard-20261013.aptplume64.chatgpt.site/', categoryId: 'service', description: '查閱售後服務相關分析內容。', icon: 'analytics', active: true },
-      { id: 'team-tracker', name: '團隊任務追蹤', url: 'https://team-tracker-wheat.vercel.app/dashboard', categoryId: 'people', description: '追蹤團隊工作項目與專案執行進度。', icon: 'team', active: true },
-      { id: 'tech-radar', name: '技師績效雷達', url: 'https://maochi710918-gif.github.io/tech-performance-radar/', categoryId: 'people', description: '檢視技師績效雷達與相關資訊。', icon: 'radar', active: true },
-      { id: 'capacity', name: '服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', categoryId: 'people', description: '掌握服務量能與工作配置資訊。', icon: 'capacity', active: true },
-      { id: 'csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', categoryId: 'admin', description: '查看 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
-      { id: 'meeting', name: '會議室預約管理', url: 'https://maochi710918-gif.github.io/yuxin-meeting-room-booking/', categoryId: 'admin', description: '查詢與管理公司會議室預約。', icon: 'meeting', active: true },
-      { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true }
+      { id: 'company-pl', name: '裕信汽車損益儀表板', url: 'https://maochi710918-gif.github.io/yuxin-pl-dashboard/', workspaceId: 'department', categoryId: 'company', description: '快速查看公司整體損益與營運資訊。', icon: 'chart', active: true },
+      { id: 'service-pl', name: '裕信服務部損益儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-pl-dashboard/', workspaceId: 'department', categoryId: 'service', description: '集中掌握服務部損益與營運概況。', icon: 'chart', active: true },
+      { id: 'service-dashboard', name: '裕信服務部營運儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'department', categoryId: 'service', description: '開啟服務部日常營運資訊入口。', icon: 'service', active: true },
+      { id: 'aftersales', name: '售後服務分析儀表板', url: 'https://es-aftersales-dashboard-20261013.aptplume64.chatgpt.site/', workspaceId: 'department', categoryId: 'service', description: '查閱售後服務相關分析內容。', icon: 'analytics', active: true },
+      { id: 'team-tracker', name: '團隊任務追蹤', url: 'https://team-tracker-wheat.vercel.app/dashboard', workspaceId: 'department', categoryId: 'people', description: '追蹤團隊工作項目與專案執行進度。', icon: 'team', active: true },
+      { id: 'tech-radar', name: '技師績效雷達', url: 'https://maochi710918-gif.github.io/tech-performance-radar/', workspaceId: 'department', categoryId: 'people', description: '檢視技師績效雷達與相關資訊。', icon: 'radar', active: true },
+      { id: 'capacity', name: '服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', workspaceId: 'department', categoryId: 'people', description: '掌握服務量能與工作配置資訊。', icon: 'capacity', active: true },
+      { id: 'csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'department', categoryId: 'admin', description: '查看 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
+      { id: 'meeting', name: '會議室預約管理', url: 'https://maochi710918-gif.github.io/yuxin-meeting-room-booking/', workspaceId: 'department', categoryId: 'admin', description: '查詢與管理公司會議室預約。', icon: 'meeting', active: true },
+      { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true }
     ],
     favorites: [], recent: [], layout: 'grid'
   };
 
   let state = loadState();
+  let currentWorkspace = null;
   let filters = { view: 'all', categoryId: 'all', query: '' };
   let confirmAction = null;
   let pendingAdminAction = null;
@@ -39,9 +44,13 @@
   function loadState() {
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (stored?.categories && stored?.entries) return { ...structuredClone(defaultState), ...stored };
+      if (stored?.categories && stored?.entries) return normalizeState({ ...structuredClone(defaultState), ...stored });
     } catch (error) { console.warn('Unable to load local data', error); }
-    return structuredClone(defaultState);
+    return normalizeState(structuredClone(defaultState));
+  }
+  function normalizeState(data) {
+    data.entries = data.entries.map(entry => ({ ...entry, workspaceId: entry.workspaceId || 'department' }));
+    return data;
   }
   function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function uid(prefix) { return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`; }
@@ -56,8 +65,38 @@
     $('#passwordModal').showModal(); setTimeout(() => $('#adminPassword').focus(), 50);
   }
 
+  function renderLandingCounts() {
+    $('#plantEntryCount').textContent = state.entries.filter(entry => entry.active && entry.workspaceId === 'plant').length;
+    $('#departmentEntryCount').textContent = state.entries.filter(entry => entry.active && entry.workspaceId === 'department').length;
+  }
+
+  function selectWorkspace(workspaceId) {
+    if (!workspaces[workspaceId]) return;
+    currentWorkspace = workspaceId;
+    filters = { view: 'all', categoryId: 'all', query: '' };
+    $('#searchInput').value = '';
+    $$('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === 'all'));
+    $('#entryLanding').hidden = true;
+    $('#portalShell').hidden = false;
+    $('#topbarActions').hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    render();
+  }
+
+  function showWorkspaceLanding() {
+    currentWorkspace = null;
+    $('#entryLanding').hidden = false;
+    $('#portalShell').hidden = true;
+    $('#topbarActions').hidden = true;
+    renderLandingCounts();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function render() {
-    const active = state.entries.filter(entry => entry.active);
+    renderLandingCounts();
+    if (!currentWorkspace) return;
+    const active = state.entries.filter(entry => entry.active && entry.workspaceId === currentWorkspace);
+    $('#pageTitle').textContent = `${workspaces[currentWorkspace].name} AI 數位管理平台`;
     $('#activeCount').textContent = active.length;
     $('#categoryCount').textContent = state.categories.length;
     $('#favoriteCount').textContent = state.favorites.filter(id => active.some(entry => entry.id === id)).length;
@@ -100,6 +139,10 @@
       ? [{ id: 'recent', name: '最近使用', entries: visible }]
       : state.categories.map(category => ({ ...category, entries: visible.filter(entry => entry.categoryId === category.id) })).filter(group => group.entries.length);
     container.innerHTML = groups.map(group => `<section class="portal-section"><div class="section-head"><h2>${escapeHtml(group.name)}</h2><span>${group.entries.length} 個入口</span></div><div class="portal-grid">${group.entries.map(cardTemplate).join('')}</div></section>`).join('');
+    const isWorkspaceEmpty = !active.length && filters.view === 'all' && filters.categoryId === 'all' && !filters.query;
+    $('#emptyTitle').textContent = isWorkspaceEmpty ? `${workspaces[currentWorkspace].name}尚未建立入口` : '找不到符合條件的入口';
+    $('#emptyText').textContent = isWorkspaceEmpty ? '可由管理者使用「新增入口」建立第一個系統入口。' : '請調整搜尋關鍵字、分類或檢視條件。';
+    $('#clearFiltersBtn').hidden = isWorkspaceEmpty;
     $('#emptyState').hidden = visible.length > 0;
   }
 
@@ -113,16 +156,17 @@
   }
 
   function renderAdminEntries() {
-    $('#adminEntries').innerHTML = state.entries.map((entry, index) => `<div class="admin-item" draggable="true" data-id="${entry.id}">
+    const entries = state.entries.filter(entry => entry.workspaceId === currentWorkspace);
+    $('#adminEntries').innerHTML = entries.map((entry, index) => `<div class="admin-item" draggable="true" data-id="${entry.id}">
       <span class="drag-handle" title="拖曳排序">⠿</span><span class="portal-icon">${iconOptions[entry.icon] || iconOptions.link}</span>
-      <div class="admin-info"><strong>${escapeHtml(entry.name)}</strong><small><span class="status-dot ${entry.active ? '' : 'off'}"></span>${entry.active ? '啟用' : '已停用'} · ${escapeHtml(categoryName(entry.categoryId))}</small></div>
-      <div class="admin-controls"><button class="mini-btn" data-admin-action="up" ${index === 0 ? 'disabled' : ''} title="上移">↑</button><button class="mini-btn" data-admin-action="down" ${index === state.entries.length - 1 ? 'disabled' : ''} title="下移">↓</button><label class="switch" title="${entry.active ? '停用' : '啟用'}入口"><input type="checkbox" data-admin-action="toggle" ${entry.active ? 'checked' : ''}><span></span></label><button class="mini-btn" data-admin-action="edit" title="編輯">✎</button><button class="mini-btn danger" data-admin-action="delete" title="刪除">×</button></div>
+      <div class="admin-info"><strong>${escapeHtml(entry.name)}</strong><small><span class="status-dot ${entry.active ? '' : 'off'}"></span>${entry.active ? '啟用' : '已停用'} · ${escapeHtml(categoryName(entry.categoryId))} · ${workspaces[entry.workspaceId].name}</small></div>
+      <div class="admin-controls"><button class="mini-btn" data-admin-action="up" ${index === 0 ? 'disabled' : ''} title="上移">↑</button><button class="mini-btn" data-admin-action="down" ${index === entries.length - 1 ? 'disabled' : ''} title="下移">↓</button><label class="switch" title="${entry.active ? '停用' : '啟用'}入口"><input type="checkbox" data-admin-action="toggle" ${entry.active ? 'checked' : ''}><span></span></label><button class="mini-btn" data-admin-action="edit" title="編輯">✎</button><button class="mini-btn danger" data-admin-action="delete" title="刪除">×</button></div>
     </div>`).join('');
   }
 
   function renderAdminCategories() {
     $('#adminCategories').innerHTML = state.categories.map((category, index) => `<div class="admin-item" data-id="${category.id}">
-      <span class="drag-handle">≡</span><span class="portal-icon">▤</span><div class="admin-info"><strong>${escapeHtml(category.name)}</strong><small>${state.entries.filter(entry => entry.categoryId === category.id).length} 個入口</small></div>
+      <span class="drag-handle">≡</span><span class="portal-icon">▤</span><div class="admin-info"><strong>${escapeHtml(category.name)}</strong><small>${state.entries.filter(entry => entry.workspaceId === currentWorkspace && entry.categoryId === category.id).length} 個入口</small></div>
       <div class="admin-controls"><button class="mini-btn" data-category-action="up" ${index === 0 ? 'disabled' : ''}>↑</button><button class="mini-btn" data-category-action="down" ${index === state.categories.length - 1 ? 'disabled' : ''}>↓</button><button class="mini-btn" data-category-action="edit">✎</button><button class="mini-btn danger" data-category-action="delete">×</button></div>
     </div>`).join('');
   }
@@ -139,15 +183,15 @@
   function openEntryModal(entry = null) {
     $('#entryForm').reset(); clearErrors(); updateFormSelects();
     $('#entryModalTitle').textContent = entry ? '修改入口' : '新增入口'; $('#entryId').value = entry?.id || '';
-    if (entry) { $('#entryName').value = entry.name; $('#entryUrl').value = entry.url; $('#entryCategory').value = entry.categoryId; $('#entryIcon').value = entry.icon || 'link'; $('#entryDescription').value = entry.description; }
-    else { $('#entryIcon').value = 'link'; if (filters.categoryId !== 'all') $('#entryCategory').value = filters.categoryId; }
+    if (entry) { $('#entryName').value = entry.name; $('#entryUrl').value = entry.url; $('#entryWorkspace').value = entry.workspaceId || 'department'; $('#entryCategory').value = entry.categoryId; $('#entryIcon').value = entry.icon || 'link'; $('#entryDescription').value = entry.description; }
+    else { $('#entryWorkspace').value = currentWorkspace || 'department'; $('#entryIcon').value = 'link'; if (filters.categoryId !== 'all') $('#entryCategory').value = filters.categoryId; }
     $('#entryModal').showModal(); setTimeout(() => $('#entryName').focus(), 50);
   }
 
   function validateEntry() {
-    clearErrors(); const data = { name: $('#entryName').value.trim(), url: $('#entryUrl').value.trim(), categoryId: $('#entryCategory').value, icon: $('#entryIcon').value, description: $('#entryDescription').value.trim() };
+    clearErrors(); const data = { name: $('#entryName').value.trim(), url: $('#entryUrl').value.trim(), workspaceId: $('#entryWorkspace').value, categoryId: $('#entryCategory').value, icon: $('#entryIcon').value, description: $('#entryDescription').value.trim() };
     let valid = true;
-    [['#entryName', data.name, '請輸入入口名稱'], ['#entryCategory', data.categoryId, '請選擇分類'], ['#entryDescription', data.description, '請輸入用途說明']].forEach(([selector, value, message]) => { if (!value) { setError(selector, message); valid = false; } });
+    [['#entryName', data.name, '請輸入入口名稱'], ['#entryWorkspace', data.workspaceId, '請選擇入口歸屬'], ['#entryCategory', data.categoryId, '請選擇分類'], ['#entryDescription', data.description, '請輸入用途說明']].forEach(([selector, value, message]) => { if (!value) { setError(selector, message); valid = false; } });
     if (!data.url) { setError('#entryUrl', '請輸入完整網址'); valid = false; }
     else { try { const parsed = new URL(data.url); if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error(); } catch { setError('#entryUrl', '網址格式不正確，請輸入以 http:// 或 https:// 開頭的完整網址'); valid = false; } }
     $('#formAlert').hidden = valid; if (!valid) $('#formAlert').textContent = '請修正標示的欄位後再儲存。'; return valid ? data : null;
@@ -156,6 +200,16 @@
   function clearErrors() { $$('.field').forEach(field => field.classList.remove('invalid')); $$('.error').forEach(error => error.textContent = ''); $('#formAlert').hidden = true; }
 
   function move(array, from, to) { if (to < 0 || to >= array.length) return; const [item] = array.splice(from, 1); array.splice(to, 0, item); saveState(); render(); }
+  function moveEntryWithinWorkspace(id, offset) {
+    const entries = state.entries.filter(entry => entry.workspaceId === currentWorkspace);
+    const position = entries.findIndex(entry => entry.id === id);
+    const other = entries[position + offset];
+    if (!other) return;
+    const from = state.entries.findIndex(entry => entry.id === id);
+    const to = state.entries.findIndex(entry => entry.id === other.id);
+    [state.entries[from], state.entries[to]] = [state.entries[to], state.entries[from]];
+    saveState(); render();
+  }
   function askConfirm(text, action) { $('#confirmText').textContent = text; confirmAction = action; $('#confirmLayer').hidden = false; $('#confirmCancel').focus(); }
   function closeConfirm() { $('#confirmLayer').hidden = true; confirmAction = null; }
 
@@ -173,6 +227,9 @@
     if (event.target.closest('.modal-close')) event.target.closest('dialog').close();
   });
 
+  $$('[data-workspace]').forEach(button => button.addEventListener('click', () => selectWorkspace(button.dataset.workspace)));
+  $('#switchWorkspaceBtn').addEventListener('click', showWorkspaceLanding);
+  $('.brand').addEventListener('click', event => { event.preventDefault(); showWorkspaceLanding(); });
   $('#addBtn').addEventListener('click', () => requireAdmin(() => openEntryModal()));
   $('#adminAddBtn').addEventListener('click', () => { $('#manageModal').close(); openEntryModal(); });
   $('#manageBtn').addEventListener('click', () => requireAdmin(() => { render(); $('#manageModal').showModal(); }));
@@ -199,7 +256,7 @@
   $$('.admin-tabs button').forEach(button => button.addEventListener('click', () => { $$('.admin-tabs button').forEach(btn => btn.classList.toggle('active', btn === button)); $('#entriesPanel').hidden = button.dataset.adminTab !== 'entries'; $('#categoriesPanel').hidden = button.dataset.adminTab !== 'categories'; }));
   $('#adminEntries').addEventListener('click', event => {
     const button = event.target.closest('[data-admin-action]'); if (!button) return; const row = button.closest('.admin-item'); const index = state.entries.findIndex(entry => entry.id === row.dataset.id); const entry = state.entries[index]; const action = button.dataset.adminAction;
-    if (action === 'up') move(state.entries, index, index - 1); if (action === 'down') move(state.entries, index, index + 1);
+    if (action === 'up') moveEntryWithinWorkspace(entry.id, -1); if (action === 'down') moveEntryWithinWorkspace(entry.id, 1);
     if (action === 'toggle') { entry.active = button.checked; saveState(); render(); showToast(entry.active ? '入口已啟用' : '入口已停用'); }
     if (action === 'edit') { $('#manageModal').close(); openEntryModal(entry); }
     if (action === 'delete') askConfirm(`「${entry.name}」刪除後將無法復原，是否繼續？`, () => { state.entries.splice(index, 1); state.favorites = state.favorites.filter(id => id !== entry.id); state.recent = state.recent.filter(item => item.id !== entry.id); saveState(); render(); showToast('入口已刪除'); });
