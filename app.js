@@ -11,6 +11,7 @@
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
   };
   const defaultState = {
+    dataVersion: 2,
     categories: [
       { id: 'company', name: '公司損益與營運' },
       { id: 'service', name: '服務部損益與營運' },
@@ -27,7 +28,9 @@
       { id: 'capacity', name: '服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', workspaceId: 'department', categoryId: 'people', description: '掌握服務量能與工作配置資訊。', icon: 'capacity', active: true },
       { id: 'csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'department', categoryId: 'admin', description: '查看 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
       { id: 'meeting', name: '會議室預約管理', url: 'https://maochi710918-gif.github.io/yuxin-meeting-room-booking/', workspaceId: 'department', categoryId: 'admin', description: '查詢與管理公司會議室預約。', icon: 'meeting', active: true },
-      { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true }
+      { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true },
+      { id: 'plant-daily-performance', name: '日業績分析儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
+      { id: 'plant-csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'plant', categoryId: 'admin', description: '查看服務廠 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true }
     ],
     favorites: [], recent: [], layout: 'grid'
   };
@@ -44,12 +47,21 @@
   function loadState() {
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (stored?.categories && stored?.entries) return normalizeState({ ...structuredClone(defaultState), ...stored });
+      if (stored?.categories && stored?.entries) {
+        const normalized = normalizeState({ ...structuredClone(defaultState), ...stored, dataVersion: stored.dataVersion || 1 });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+        return normalized;
+      }
     } catch (error) { console.warn('Unable to load local data', error); }
     return normalizeState(structuredClone(defaultState));
   }
   function normalizeState(data) {
     data.entries = data.entries.map(entry => ({ ...entry, workspaceId: entry.workspaceId || 'department' }));
+    if (data.dataVersion < 2) {
+      const additions = defaultState.entries.filter(entry => ['plant-daily-performance', 'plant-csi'].includes(entry.id) && !data.entries.some(item => item.id === entry.id));
+      data.entries.push(...structuredClone(additions));
+      data.dataVersion = 2;
+    }
     return data;
   }
   function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
