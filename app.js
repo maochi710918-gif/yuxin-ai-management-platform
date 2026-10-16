@@ -11,7 +11,7 @@
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
   };
   const defaultState = {
-    dataVersion: 2,
+    dataVersion: 3,
     categories: [
       { id: 'company', name: '公司損益與營運' },
       { id: 'service', name: '服務部損益與營運' },
@@ -30,7 +30,9 @@
       { id: 'meeting', name: '會議室預約管理', url: 'https://maochi710918-gif.github.io/yuxin-meeting-room-booking/', workspaceId: 'department', categoryId: 'admin', description: '查詢與管理公司會議室預約。', icon: 'meeting', active: true },
       { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true },
       { id: 'plant-daily-performance', name: '日業績分析儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
-      { id: 'plant-csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'plant', categoryId: 'admin', description: '查看服務廠 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true }
+      { id: 'plant-csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'plant', categoryId: 'admin', description: '查看服務廠 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
+      { id: 'plant-tech-capacity', name: '技師-績效量能儀表板', url: 'https://maochi710918-gif.github.io/tech-performance-radar/', workspaceId: 'plant', categoryId: 'people', description: '檢視服務廠技師績效與量能資訊。', icon: 'radar', active: true },
+      { id: 'plant-service-capacity', name: '服專/出納-服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', workspaceId: 'plant', categoryId: 'people', description: '掌握服專與出納的服務量能及工作配置。', icon: 'capacity', active: true }
     ],
     favorites: [], recent: [], layout: 'grid'
   };
@@ -60,6 +62,11 @@
       const additions = defaultState.entries.filter(entry => ['plant-daily-performance', 'plant-csi'].includes(entry.id) && !data.entries.some(item => item.id === entry.id));
       data.entries.push(...structuredClone(additions));
       data.dataVersion = 2;
+    }
+    if (data.dataVersion < 3) {
+      const additions = defaultState.entries.filter(entry => ['plant-tech-capacity', 'plant-service-capacity'].includes(entry.id) && !data.entries.some(item => item.id === entry.id));
+      data.entries.push(...structuredClone(additions));
+      data.dataVersion = 3;
     }
     return data;
   }
