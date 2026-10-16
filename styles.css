@@ -68,6 +68,7 @@ body { background: radial-gradient(circle at 12% 8%, rgba(255,255,255,.9), trans
 .workspace-choice-copy small { color:#8b979e; }
 .workspace-choice-copy strong { color:var(--navy-900); }
 .workspace-choice-meta i { background:var(--brand-red); }
+.workspace-lock { margin-left:14px; padding:4px 8px; border-radius:20px; color:#a32937; background:#fff0f1; font-size:10px; font-weight:800; letter-spacing:.04em; }
 .hero { color:var(--navy-900); background:radial-gradient(circle at 88% 12%,rgba(212,226,233,.8),transparent 30%),linear-gradient(128deg,#f7f3ee,#e8eff2); }
 .hero::after { border-color:rgba(30,70,98,.09); box-shadow:0 0 0 46px rgba(255,255,255,.24),0 0 0 92px rgba(255,255,255,.16); }
 .hero .eyebrow { color:#718592; }

@@ -6,7 +6,7 @@
   <meta name="description" content="裕信汽車零件服務事業群內部儀表板、管理系統與數位工具入口平台">
   <meta name="theme-color" content="#f3f0eb">
   <title>零件服務事業群 AI 數位管理平台</title>
-  <link rel="stylesheet" href="styles.css?v=20261016-2">
+  <link rel="stylesheet" href="styles.css?v=20261016-3">
 </head>
 <body>
   <header class="topbar">
@@ -43,7 +43,7 @@
           <button class="workspace-choice department" type="button" data-workspace="department">
             <span class="workspace-choice-icon" aria-hidden="true">部</span>
             <span class="workspace-choice-copy"><small>SERVICE DEPARTMENT</small><strong>服務部</strong><em>進入現有儀表板與管理系統</em></span>
-            <span class="workspace-choice-meta"><b id="departmentEntryCount">10</b> 個入口 <i>→</i></span>
+            <span class="workspace-choice-meta"><b id="departmentEntryCount">10</b> 個入口 <span class="workspace-lock">◆ 密碼保護</span><i>→</i></span>
           </button>
         </div>
       </div>
@@ -147,10 +147,10 @@
   <dialog class="modal modal-small auth-modal" id="passwordModal">
     <form method="dialog" id="passwordForm" novalidate>
       <div class="modal-head">
-        <div><p class="eyebrow">ADMIN ACCESS</p><h2>管理密碼驗證</h2></div>
+        <div><p class="eyebrow">SECURE ACCESS</p><h2 id="passwordModalTitle">管理密碼驗證</h2></div>
         <button type="button" class="icon-btn modal-close" aria-label="關閉">×</button>
       </div>
-      <div class="auth-copy"><span class="auth-lock" aria-hidden="true">◆</span><p>此功能僅供管理人員使用，請輸入管理密碼後繼續。</p></div>
+      <div class="auth-copy"><span class="auth-lock" aria-hidden="true">◆</span><p id="passwordModalCopy">此功能僅供管理人員使用，請輸入管理密碼後繼續。</p></div>
       <label class="field"><span>管理密碼 <em>*</em></span><div class="password-field"><input id="adminPassword" type="password" inputmode="numeric" autocomplete="current-password" placeholder="請輸入管理密碼" required><button id="togglePassword" type="button" aria-label="顯示密碼">顯示</button></div><small class="error"></small></label>
       <div class="modal-actions"><button type="button" class="btn btn-ghost modal-close">取消</button><button type="submit" class="btn btn-primary">驗證並繼續</button></div>
     </form>
@@ -163,6 +163,6 @@
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=20261016-5"></script>
+  <script src="app.js?v=20261016-6"></script>
 </body>
 </html>

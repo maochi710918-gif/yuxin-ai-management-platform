@@ -41,7 +41,8 @@
   let currentWorkspace = null;
   let filters = { view: 'all', categoryId: 'all', query: '' };
   let confirmAction = null;
-  let pendingAdminAction = null;
+  let pendingProtectedAction = null;
+  let pendingPasswordSuccessMessage = '密碼驗證成功';
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -76,11 +77,15 @@
   function categoryName(id) { return state.categories.find(category => category.id === id)?.name || '未分類'; }
   function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove('show'), 2400); }
   function passwordHash(value) { let hash = 2166136261; for (const char of value) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16); }
-  function requireAdmin(action) {
-    pendingAdminAction = action;
+  function requirePassword(action, options = {}) {
+    pendingProtectedAction = action;
+    pendingPasswordSuccessMessage = options.successMessage || '密碼驗證成功';
+    $('#passwordModalTitle').textContent = options.title || '管理密碼驗證';
+    $('#passwordModalCopy').textContent = options.description || '此功能僅供管理人員使用，請輸入管理密碼後繼續。';
     $('#passwordForm').reset(); clearErrors(); $('#togglePassword').textContent = '顯示'; $('#adminPassword').type = 'password';
     $('#passwordModal').showModal(); setTimeout(() => $('#adminPassword').focus(), 50);
   }
+  function requireAdmin(action) { requirePassword(action); }
 
   function renderLandingCounts() {
     $('#plantEntryCount').textContent = state.entries.filter(entry => entry.active && entry.workspaceId === 'plant').length;
@@ -244,7 +249,18 @@
     if (event.target.closest('.modal-close')) event.target.closest('dialog').close();
   });
 
-  $$('[data-workspace]').forEach(button => button.addEventListener('click', () => selectWorkspace(button.dataset.workspace)));
+  $$('[data-workspace]').forEach(button => button.addEventListener('click', () => {
+    const workspaceId = button.dataset.workspace;
+    if (workspaceId === 'department') {
+      requirePassword(() => selectWorkspace(workspaceId), {
+        title: '服務部入口驗證',
+        description: '服務部資料僅供授權人員使用，請輸入密碼後進入。',
+        successMessage: '服務部密碼驗證成功'
+      });
+      return;
+    }
+    selectWorkspace(workspaceId);
+  }));
   $('#switchWorkspaceBtn').addEventListener('click', showWorkspaceLanding);
   $('.brand').addEventListener('click', event => { event.preventDefault(); showWorkspaceLanding(); });
   $('#addBtn').addEventListener('click', () => requireAdmin(() => openEntryModal()));
@@ -265,10 +281,10 @@
     event.preventDefault(); const password = $('#adminPassword').value;
     if (!password) return setError('#adminPassword', '請輸入管理密碼');
     if (passwordHash(password) !== '144417d5') { setError('#adminPassword', '密碼錯誤，請重新輸入'); $('#adminPassword').select(); return; }
-    const action = pendingAdminAction; pendingAdminAction = null; $('#passwordModal').close(); showToast('管理密碼驗證成功'); action?.();
+    const action = pendingProtectedAction; const successMessage = pendingPasswordSuccessMessage; pendingProtectedAction = null; $('#passwordModal').close(); showToast(successMessage); action?.();
   });
   $('#togglePassword').addEventListener('click', () => { const input = $('#adminPassword'); const showing = input.type === 'text'; input.type = showing ? 'password' : 'text'; $('#togglePassword').textContent = showing ? '顯示' : '隱藏'; $('#togglePassword').setAttribute('aria-label', showing ? '顯示密碼' : '隱藏密碼'); input.focus(); });
-  $('#passwordModal').addEventListener('close', () => { pendingAdminAction = null; });
+  $('#passwordModal').addEventListener('close', () => { pendingProtectedAction = null; });
 
   $$('.admin-tabs button').forEach(button => button.addEventListener('click', () => { $$('.admin-tabs button').forEach(btn => btn.classList.toggle('active', btn === button)); $('#entriesPanel').hidden = button.dataset.adminTab !== 'entries'; $('#categoriesPanel').hidden = button.dataset.adminTab !== 'categories'; }));
   $('#adminEntries').addEventListener('click', event => {
