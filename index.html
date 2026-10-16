@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="裕信汽車零件服務部內部儀表板、管理系統與數位工具入口平台">
-  <meta name="theme-color" content="#0b2a4a">
-  <title>裕信汽車零件服務部 AI 數位管理平台</title>
-  <link rel="stylesheet" href="styles.css?v=20261016-1">
+  <meta name="description" content="裕信汽車零件服務事業群內部儀表板、管理系統與數位工具入口平台">
+  <meta name="theme-color" content="#f3f0eb">
+  <title>零件服務事業群 AI 數位管理平台</title>
+  <link rel="stylesheet" href="styles.css?v=20261016-2">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#" aria-label="返回首頁">
-      <span class="brand-mark" aria-hidden="true">ES</span>
-      <span><strong>裕信汽車</strong><small>零件服務部</small></span>
+      <span class="brand-emblem" aria-hidden="true"><img src="assets/yuxin-brand.png" alt=""></span>
+      <span><strong>裕信汽車</strong><small>零件服務事業群</small></span>
     </a>
     <div class="topbar-actions" id="topbarActions" hidden>
       <button class="btn btn-ghost" id="switchWorkspaceBtn" type="button"><span aria-hidden="true">⇄</span> 切換入口</button>
@@ -23,22 +23,29 @@
 
   <main>
     <section class="entry-landing" id="entryLanding" aria-labelledby="entryLandingTitle">
-      <div class="entry-landing-copy">
-        <p class="eyebrow"><span></span> SELECT YOUR WORKSPACE</p>
-        <h1 id="entryLandingTitle">請選擇管理入口</h1>
-        <p>依工作範圍進入對應的數位管理平台。</p>
-      </div>
-      <div class="workspace-choices">
-        <button class="workspace-choice plant" type="button" data-workspace="plant">
-          <span class="workspace-choice-icon" aria-hidden="true">廠</span>
-          <span class="workspace-choice-copy"><small>WORKSHOP</small><strong>服務廠</strong><em>進入服務廠專屬系統與工具</em></span>
-          <span class="workspace-choice-meta"><b id="plantEntryCount">0</b> 個入口 <i>→</i></span>
-        </button>
-        <button class="workspace-choice department" type="button" data-workspace="department">
-          <span class="workspace-choice-icon" aria-hidden="true">部</span>
-          <span class="workspace-choice-copy"><small>SERVICE DEPARTMENT</small><strong>服務部</strong><em>進入現有儀表板與管理系統</em></span>
-          <span class="workspace-choice-meta"><b id="departmentEntryCount">10</b> 個入口 <i>→</i></span>
-        </button>
+      <div class="entry-landing-inner">
+        <div class="entry-landing-copy">
+          <div class="landing-brand">
+            <span class="landing-emblem" aria-hidden="true"><img src="assets/yuxin-brand.png" alt=""></span>
+            <span><b>裕信汽車</b><small>YULON MOTOR</small></span>
+          </div>
+          <p class="eyebrow"><span></span> PARTS &amp; SERVICE BUSINESS GROUP</p>
+          <h1 id="entryLandingTitle">零件服務事業群<br><span>AI 數位管理平台</span></h1>
+          <p>集中整合內部儀表板、管理系統與數位工具，讓工作入口更清楚、更快速。</p>
+          <div class="landing-prompt"><span aria-hidden="true">↓</span> 請選擇您的工作入口</div>
+        </div>
+        <div class="workspace-choices">
+          <button class="workspace-choice plant" type="button" data-workspace="plant">
+            <span class="workspace-choice-icon" aria-hidden="true">廠</span>
+            <span class="workspace-choice-copy"><small>WORKSHOP</small><strong>服務廠</strong><em>進入服務廠專屬系統與工具</em></span>
+            <span class="workspace-choice-meta"><b id="plantEntryCount">0</b> 個入口 <i>→</i></span>
+          </button>
+          <button class="workspace-choice department" type="button" data-workspace="department">
+            <span class="workspace-choice-icon" aria-hidden="true">部</span>
+            <span class="workspace-choice-copy"><small>SERVICE DEPARTMENT</small><strong>服務部</strong><em>進入現有儀表板與管理系統</em></span>
+            <span class="workspace-choice-meta"><b id="departmentEntryCount">10</b> 個入口 <i>→</i></span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -87,7 +94,7 @@
     </div>
   </main>
 
-  <footer><span>裕信汽車零件服務部</span><span>AI Digital Management Platform</span></footer>
+  <footer><span>裕信汽車・零件服務事業群</span><span>AI Digital Management Platform</span></footer>
 
   <dialog class="modal" id="entryModal">
     <form method="dialog" id="entryForm" novalidate>
@@ -156,6 +163,6 @@
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=20261016-1"></script>
+  <script src="app.js?v=20261016-2"></script>
 </body>
 </html>
