@@ -11,7 +11,7 @@
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
   };
   const defaultState = {
-    dataVersion: 3,
+    dataVersion: 4,
     categories: [
       { id: 'company', name: '公司損益與營運' },
       { id: 'service', name: '服務部損益與營運' },
@@ -29,6 +29,8 @@
       { id: 'csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'department', categoryId: 'admin', description: '查看 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
       { id: 'meeting', name: '會議室預約管理', url: 'https://maochi710918-gif.github.io/yuxin-meeting-room-booking/', workspaceId: 'department', categoryId: 'admin', description: '查詢與管理公司會議室預約。', icon: 'meeting', active: true },
       { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true },
+      { id: 'department-uio', name: '零服UIO管理系統', url: 'http://127.0.0.1:5173/', workspaceId: 'department', categoryId: 'company', description: 'UIO 忠誠車主 CDP（限安裝系統的本機使用）。', icon: 'service', active: true, localOnly: true },
+      { id: 'department-service-fleet', name: '代步車管理平台', url: 'https://chang-vehicle-public-20261016.aptplume64.chatgpt.site/#service-fleet-section', workspaceId: 'department', categoryId: 'company', description: '管理服務代步車輛與使用資訊。', icon: 'service', active: true, localOnly: false },
       { id: 'plant-daily-performance', name: '日業績分析儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
       { id: 'plant-csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'plant', categoryId: 'admin', description: '查看服務廠 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
       { id: 'plant-tech-capacity', name: '技師-績效量能儀表板', url: 'https://maochi710918-gif.github.io/tech-performance-radar/', workspaceId: 'plant', categoryId: 'people', description: '檢視服務廠技師績效與量能資訊。', icon: 'radar', active: true },
@@ -68,6 +70,32 @@
       const additions = defaultState.entries.filter(entry => ['plant-tech-capacity', 'plant-service-capacity'].includes(entry.id) && !data.entries.some(item => item.id === entry.id));
       data.entries.push(...structuredClone(additions));
       data.dataVersion = 3;
+    }
+    if (data.dataVersion < 4) {
+      data.entries = data.entries.filter(entry => !(
+        entry.name === '測試入口' && entry.url === 'https://example.com/app#/board'
+      ));
+      const canonicalIds = ['department-uio', 'department-service-fleet'];
+      const canonicalEntries = defaultState.entries.filter(entry => canonicalIds.includes(entry.id));
+      for (const canonical of canonicalEntries) {
+        const normalizedName = canonical.name.replace(/\s+/g, '').toLocaleLowerCase('zh-Hant');
+        const existing = data.entries.find(entry =>
+          entry.id === canonical.id ||
+          (entry.name || '').replace(/\s+/g, '').toLocaleLowerCase('zh-Hant') === normalizedName ||
+          entry.url === canonical.url
+        );
+        if (existing) {
+          const preserved = {
+            id: existing.id,
+            active: existing.active,
+            url: canonical.localOnly && existing.url ? existing.url : canonical.url
+          };
+          Object.assign(existing, structuredClone(canonical), preserved);
+        } else {
+          data.entries.push(structuredClone(canonical));
+        }
+      }
+      data.dataVersion = 4;
     }
     return data;
   }
@@ -170,10 +198,14 @@
 
   function cardTemplate(entry) {
     const favorite = state.favorites.includes(entry.id);
+    const localUnavailable = entry.localOnly && !['127.0.0.1', 'localhost'].includes(location.hostname);
+    const openControl = localUnavailable
+      ? '<button class="open-btn local-only-btn" type="button" data-action="local-info">僅限本機</button>'
+      : `<a class="open-btn" href="${escapeHtml(entry.url)}" target="_blank" rel="noopener noreferrer" data-action="open">開啟系統 ↗</a>`;
     return `<article class="portal-card" data-id="${entry.id}">
       <div class="card-top"><div class="portal-icon" aria-hidden="true">${iconOptions[entry.icon] || iconOptions.link}</div><button class="favorite-btn ${favorite ? 'active' : ''}" data-action="favorite" title="${favorite ? '取消收藏' : '加入收藏'}" aria-label="${favorite ? '取消收藏' : '加入收藏'}">${favorite ? '★' : '☆'}</button></div>
       <div class="card-body"><h3>${escapeHtml(entry.name)}</h3><span class="card-category">${escapeHtml(categoryName(entry.categoryId))}</span><p>${escapeHtml(entry.description)}</p></div>
-      <div class="card-actions"><a class="open-btn" href="${escapeHtml(entry.url)}" target="_blank" rel="noopener noreferrer" data-action="open">開啟系統 ↗</a><button class="edit-btn" data-action="edit" title="編輯入口" aria-label="編輯 ${escapeHtml(entry.name)}">✎</button></div>
+      <div class="card-actions">${openControl}<button class="edit-btn" data-action="edit" title="編輯入口" aria-label="編輯 ${escapeHtml(entry.name)}">✎</button></div>
     </article>`;
   }
 
@@ -242,6 +274,7 @@
       if (action === 'favorite') { state.favorites = state.favorites.includes(entry.id) ? state.favorites.filter(id => id !== entry.id) : [...state.favorites, entry.id]; saveState(); render(); showToast(state.favorites.includes(entry.id) ? '已加入我的收藏' : '已取消收藏'); }
       if (action === 'edit') requireAdmin(() => openEntryModal(entry));
       if (action === 'open') { state.recent = [{ id: entry.id, at: Date.now() }, ...state.recent.filter(item => item.id !== entry.id)].slice(0, 10); saveState(); render(); }
+      if (action === 'local-info') showToast('零服 UIO 僅限安裝系統的本機電腦使用');
     }
     const chip = event.target.closest('[data-category]'); if (chip) { filters.categoryId = chip.dataset.category; render(); }
     const view = event.target.closest('[data-view]'); if (view) { filters.view = view.dataset.view; $$('[data-view]').forEach(btn => btn.classList.toggle('active', btn === view)); render(); }
