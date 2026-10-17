@@ -11,7 +11,7 @@
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
   };
   const defaultState = {
-    dataVersion: 4,
+    dataVersion: 5,
     categories: [
       { id: 'company', name: '公司損益與營運' },
       { id: 'service', name: '服務部損益與營運' },
@@ -31,7 +31,8 @@
       { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true },
       { id: 'department-uio', name: '零服UIO管理系統', url: 'http://127.0.0.1:5173/', workspaceId: 'department', categoryId: 'company', description: 'UIO 忠誠車主 CDP（限安裝系統的本機使用）。', icon: 'service', active: true, localOnly: true },
       { id: 'department-service-fleet', name: '代步車管理平台', url: 'https://chang-vehicle-public-20261016.aptplume64.chatgpt.site/#service-fleet-section', workspaceId: 'department', categoryId: 'company', description: '管理服務代步車輛與使用資訊。', icon: 'service', active: true, localOnly: false },
-      { id: 'plant-daily-performance', name: '日業績分析儀表板', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
+      { id: 'plant-daily-analysis', name: '日業績分析儀表板', url: 'https://es-aftersales-dashboard-20261013.aptplume64.chatgpt.site/', workspaceId: 'plant', categoryId: 'company', description: '每日業績', icon: 'link', active: true },
+      { id: 'plant-daily-performance', name: '營運績效戰情中心', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
       { id: 'plant-csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'plant', categoryId: 'admin', description: '查看服務廠 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
       { id: 'plant-tech-capacity', name: '技師-績效量能儀表板', url: 'https://maochi710918-gif.github.io/tech-performance-radar/', workspaceId: 'plant', categoryId: 'people', description: '檢視服務廠技師績效與量能資訊。', icon: 'radar', active: true },
       { id: 'plant-service-capacity', name: '服專/出納-服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', workspaceId: 'plant', categoryId: 'people', description: '掌握服專與出納的服務量能及工作配置。', icon: 'capacity', active: true }
@@ -96,6 +97,29 @@
         }
       }
       data.dataVersion = 4;
+    }
+    if (data.dataVersion < 5) {
+      const performance = defaultState.entries.find(entry => entry.id === 'plant-daily-performance');
+      const existingPerformance = data.entries.find(entry => entry.id === performance.id);
+      if (existingPerformance) {
+        const active = existingPerformance.active;
+        Object.assign(existingPerformance, structuredClone(performance), { active });
+      } else {
+        data.entries.push(structuredClone(performance));
+      }
+
+      const dailyAnalysis = defaultState.entries.find(entry => entry.id === 'plant-daily-analysis');
+      const existingAnalysis = data.entries.find(entry =>
+        entry.id === dailyAnalysis.id ||
+        (entry.workspaceId === 'plant' && entry.url === dailyAnalysis.url)
+      );
+      if (existingAnalysis) {
+        const preserved = { id: existingAnalysis.id, active: existingAnalysis.active };
+        Object.assign(existingAnalysis, structuredClone(dailyAnalysis), preserved);
+      } else {
+        data.entries.push(structuredClone(dailyAnalysis));
+      }
+      data.dataVersion = 5;
     }
     return data;
   }
