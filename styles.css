@@ -105,6 +105,8 @@ footer { color:#b9c4ca; background:#243c4e; }
 /* Clearly distinguish entries that only exist on the installed local machine. */
 .local-only-btn { color:#72552a; background:#f3ead8; cursor:help; }
 .local-only-btn:hover { color:#62471f; background:#eadcbe; }
+.red-action-btn { background:var(--brand-red); box-shadow:0 7px 18px rgba(224,0,32,.18); }
+.red-action-btn:hover { background:#c9001d; }
 @media (max-width:650px) {
   .list-layout .local-only-btn::after { content:"本機"; font-size:11px; }
 }

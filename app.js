@@ -259,9 +259,10 @@
   function cardTemplate(entry) {
     const favorite = state.favorites.includes(entry.id);
     const localUnavailable = entry.localOnly && !['127.0.0.1', 'localhost'].includes(location.hostname);
+    const redAction = currentWorkspace === 'plant' && entry.categoryId === 'admin';
     const openControl = localUnavailable
       ? '<button class="open-btn local-only-btn" type="button" data-action="local-info">僅限本機</button>'
-      : `<a class="open-btn" href="${escapeHtml(entry.url)}" target="_blank" rel="noopener noreferrer" data-action="open">開啟系統 ↗</a>`;
+      : `<a class="open-btn${redAction ? ' red-action-btn' : ''}" href="${escapeHtml(entry.url)}" target="_blank" rel="noopener noreferrer" data-action="open">開啟系統 ↗</a>`;
     return `<article class="portal-card" data-id="${entry.id}">
       <div class="card-top"><div class="portal-icon" aria-hidden="true">${iconOptions[entry.icon] || iconOptions.link}</div><button class="favorite-btn ${favorite ? 'active' : ''}" data-action="favorite" title="${favorite ? '取消收藏' : '加入收藏'}" aria-label="${favorite ? '取消收藏' : '加入收藏'}">${favorite ? '★' : '☆'}</button></div>
       <div class="card-body"><h3>${escapeHtml(entry.name)}</h3><span class="card-category">${escapeHtml(categoryName(entry.categoryId))}</span><p>${escapeHtml(entry.description)}</p></div>
