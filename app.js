@@ -11,7 +11,7 @@
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
   };
   const defaultState = {
-    dataVersion: 5,
+    dataVersion: 6,
     categories: [
       { id: 'company', name: '公司損益與營運' },
       { id: 'service', name: '服務部損益與營運' },
@@ -35,7 +35,16 @@
       { id: 'plant-daily-performance', name: '營運績效戰情中心', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
       { id: 'plant-csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'plant', categoryId: 'admin', description: '查看服務廠 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
       { id: 'plant-tech-capacity', name: '技師-績效量能儀表板', url: 'https://maochi710918-gif.github.io/tech-performance-radar/', workspaceId: 'plant', categoryId: 'people', description: '檢視服務廠技師績效與量能資訊。', icon: 'radar', active: true },
-      { id: 'plant-service-capacity', name: '服專/出納-服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', workspaceId: 'plant', categoryId: 'people', description: '掌握服專與出納的服務量能及工作配置。', icon: 'capacity', active: true }
+      { id: 'plant-service-capacity', name: '服專/出納-服務量能儀表板', url: 'https://maochi710918-gif.github.io/ys-service-capacity-dashboard/app/index.html#/board', workspaceId: 'plant', categoryId: 'people', description: '掌握服專與出納的服務量能及工作配置。', icon: 'capacity', active: true },
+      { id: 'plant-eip-performance', name: '裕信業績儀表版ＥＩＰ', url: 'http://210.242.90.200:8888/HJ/R/LOGIN/login.php?opt=out', workspaceId: 'plant', categoryId: 'company', description: '快速查看裕信業績資訊、營運指標與相關管理數據。', icon: 'chart', active: true },
+      { id: 'plant-equipment-repair-form', name: '設備維修申請問卷', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdzRaJDH3lQjzWJlryq9zKpbjv5l0Gixlb7E3cqbhDXG4-SLw/viewform?usp=dialog', workspaceId: 'plant', categoryId: 'admin', description: '填寫設備維修需求，自動產生申請表。', icon: 'tool', active: true },
+      { id: 'plant-equipment-repair-folder', name: '設備維修單雲端網址', url: 'https://drive.google.com/drive/folders/1KmPgjaBhR4TJDJylNqF4wqKD6xeR4qin', workspaceId: 'plant', categoryId: 'admin', description: '查找已生成的設備維修單，列印紙本送簽。', icon: 'link', active: true },
+      { id: 'plant-purchase-form', name: '採購申請問卷', url: 'https://docs.google.com/forms/d/e/1FAIpQLSevY5pMpkMBEknPvCdsaDqqKmJ34YO6TAKUmQvA2UJiebrdlQ/viewform?usp=dialog', workspaceId: 'plant', categoryId: 'admin', description: '填寫採購需求，產生雲端採購申請表。', icon: 'briefcase', active: true },
+      { id: 'plant-purchase-folder', name: '採購申請單雲端網址', url: 'https://drive.google.com/drive/folders/17R8CnVXRS4vNFrmrJc5ceGk8lscUU4me', workspaceId: 'plant', categoryId: 'admin', description: '查找已生成的採購申請單，列印紙本送簽。', icon: 'link', active: true },
+      { id: 'plant-customer-care-audio', name: '客戶關懷音檔上傳', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeo-du2z3MU9UxJvOsLJ1xw5d5EKC_E5NkuhvIO8tbYYXKGoQ/viewform', workspaceId: 'plant', categoryId: 'admin', description: '上傳各廠客戶關懷錄音，並依問卷內容分類管理。', icon: 'service', active: true },
+      { id: 'plant-maintenance-call-audio', name: '定保招攬音檔上傳', url: 'https://docs.google.com/forms/d/e/1FAIpQLSefQyoKX7FAaXkhaj41_J0wZWcGbRKMCdgru0kO-lsTBJHFYQ/viewform?usp=dialog', workspaceId: 'plant', categoryId: 'admin', description: '上傳各廠定期保養招攬錄音，並依廠別與人員分類管理。', icon: 'service', active: true },
+      { id: 'plant-uio-test-drive-audio', name: 'UIO試乘DC音檔上傳', url: 'https://docs.google.com/forms/d/e/1FAIpQLScp7asFSBiO1iopPNKPs18pkIxZSPCvo1O5rizvYd18hVDnLA/viewform?usp=dialog', workspaceId: 'plant', categoryId: 'admin', description: '上傳 UIO 試乘撥打聯繫音檔。', icon: 'service', active: true },
+      { id: 'plant-body-paint-inspection', name: '鈑噴終檢照片回傳', url: 'https://docs.google.com/forms/d/e/1FAIpQLSd8veY1hc8UEJJwJGBwXf4LJgVdq1s36K8bMV2shoPvykC0KQ/viewform', workspaceId: 'plant', categoryId: 'admin', description: '回傳鈑噴完成車輛照片，建立完整分類紀錄。', icon: 'csi', active: true }
     ],
     favorites: [], recent: [], layout: 'grid'
   };
@@ -120,6 +129,33 @@
         data.entries.push(structuredClone(dailyAnalysis));
       }
       data.dataVersion = 5;
+    }
+    if (data.dataVersion < 6) {
+      const operationsIds = [
+        'plant-eip-performance',
+        'plant-equipment-repair-form',
+        'plant-equipment-repair-folder',
+        'plant-purchase-form',
+        'plant-purchase-folder',
+        'plant-customer-care-audio',
+        'plant-maintenance-call-audio',
+        'plant-uio-test-drive-audio',
+        'plant-body-paint-inspection'
+      ];
+      const operationsEntries = defaultState.entries.filter(entry => operationsIds.includes(entry.id));
+      for (const canonical of operationsEntries) {
+        const existing = data.entries.find(entry =>
+          entry.id === canonical.id ||
+          (entry.workspaceId === 'plant' && entry.url === canonical.url)
+        );
+        if (existing) {
+          const preserved = { id: existing.id, active: existing.active };
+          Object.assign(existing, structuredClone(canonical), preserved);
+        } else {
+          data.entries.push(structuredClone(canonical));
+        }
+      }
+      data.dataVersion = 6;
     }
     return data;
   }
