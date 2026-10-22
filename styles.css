@@ -40,6 +40,7 @@ footer { min-height: 64px; padding: 20px clamp(20px, 5vw, 72px); display: flex; 
 /* Softer brand-led visual refresh */
 body { background: radial-gradient(circle at 12% 8%, rgba(255,255,255,.9), transparent 30%), var(--bg); }
 .topbar { background: rgba(255,253,250,.94); border-bottom-color: rgba(35,52,68,.1); backdrop-filter: blur(12px); }
+.topbar:has(#topbarActions[hidden]) { justify-content:center; }
 .brand-emblem, .landing-emblem { position: relative; display: block; flex: 0 0 auto; overflow: hidden; border-radius: 50%; background: var(--brand-red); box-shadow: 0 8px 22px rgba(224,0,32,.18); }
 .brand-emblem { width: 48px; height: 48px; }
 .brand-emblem img { position: absolute; width: 182px; max-width: none; left: -28px; top: -25px; }
