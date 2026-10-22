@@ -11,7 +11,7 @@
     csi: '★', meeting: '▦', seat: '⌑', link: '↗', briefcase: '▣', tool: '⚙'
   };
   const defaultState = {
-    dataVersion: 6,
+    dataVersion: 7,
     categories: [
       { id: 'company', name: '公司損益與營運' },
       { id: 'service', name: '服務部損益與營運' },
@@ -29,7 +29,7 @@
       { id: 'csi', name: 'CSI 服務滿意度儀表板', url: 'https://maochi710918-gif.github.io/csi-service-dashboard/', workspaceId: 'department', categoryId: 'admin', description: '查看 CSI 客戶服務滿意度資訊。', icon: 'csi', active: true },
       { id: 'meeting', name: '會議室預約管理', url: 'https://maochi710918-gif.github.io/yuxin-meeting-room-booking/', workspaceId: 'department', categoryId: 'admin', description: '查詢與管理公司會議室預約。', icon: 'meeting', active: true },
       { id: 'seat', name: '座位管理系統', url: 'https://maochi710918-gif.github.io/seat-manager/', workspaceId: 'department', categoryId: 'admin', description: '管理辦公座位配置與使用資訊。', icon: 'seat', active: true },
-      { id: 'department-uio', name: '零服UIO管理系統', url: 'http://127.0.0.1:5173/', workspaceId: 'department', categoryId: 'company', description: 'UIO 忠誠車主 CDP（限安裝系統的本機使用）。', icon: 'service', active: true, localOnly: true },
+      { id: 'department-uio', name: '零服UIO管理系統', url: 'http://172.30.248.13:8090/', workspaceId: 'department', categoryId: 'company', description: 'UIO 忠誠車主 CDP（需連線公司內部網路或 VPN）。', icon: 'service', active: true, localOnly: false },
       { id: 'department-service-fleet', name: '代步車管理平台', url: 'https://chang-vehicle-public-20261016.aptplume64.chatgpt.site/#service-fleet-section', workspaceId: 'department', categoryId: 'company', description: '管理服務代步車輛與使用資訊。', icon: 'service', active: true, localOnly: false },
       { id: 'plant-daily-analysis', name: '日業績分析儀表板', url: 'https://es-aftersales-dashboard-20261013.aptplume64.chatgpt.site/', workspaceId: 'plant', categoryId: 'company', description: '每日業績', icon: 'link', active: true },
       { id: 'plant-daily-performance', name: '營運績效戰情中心', url: 'https://maochi710918-gif.github.io/yuxin-service-dashboard/', workspaceId: 'plant', categoryId: 'service', description: '查看服務廠每日業績與營運績效資訊。', icon: 'analytics', active: true },
@@ -156,6 +156,20 @@
         }
       }
       data.dataVersion = 6;
+    }
+    if (data.dataVersion < 7) {
+      const canonical = defaultState.entries.find(entry => entry.id === 'department-uio');
+      const existing = data.entries.find(entry =>
+        entry.id === canonical.id ||
+        (entry.name || '').replace(/\s+/g, '').toLocaleLowerCase('zh-Hant') === canonical.name.toLocaleLowerCase('zh-Hant')
+      );
+      if (existing) {
+        const preserved = { id: existing.id, active: existing.active };
+        Object.assign(existing, structuredClone(canonical), preserved);
+      } else {
+        data.entries.push(structuredClone(canonical));
+      }
+      data.dataVersion = 7;
     }
     return data;
   }
